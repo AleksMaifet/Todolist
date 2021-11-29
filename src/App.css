@@ -1,7 +1,9 @@
 body {
   min-height: 100vh;
-  background: url("../src/Image/patternjpg.jpg") no-repeat;
-  background-size: cover;
+  background-color: #E1D38A;;
+  margin: 0 auto;
+  margin-right: calc(-1 * (100vw - 100%));
+  overflow-x: hidden;
 }
 .active-filter {
   background-color: aquamarine;
