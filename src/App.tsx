@@ -1,32 +1,36 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {Container} from "@material-ui/core";
-import {setTodolistsTC} from "./reducer/TodoListReducer";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import MenuAppBar from "./components/AppBar";
 import {LinearIndeterminate} from "./components/LinearProgress";
-import {TodolistDemo} from "./components/TodolistDemo";
-import {Routes,Route} from "react-router-dom";
-import {AuthLogin} from "./components/AuthLogin/AuthLogin";
+import {RoutesBlock} from './components/Routes/Routes';
+import {isInitializationTC} from "./reducer/AppReducer";
+import {ErrorAlert} from "./components/ErrorAlert";
+import {error} from "./Selectors/Selectors";
+import {IsLoad} from "./components/Load/Load";
+import {rootReducersType} from "./reducerRedux/ReducerRedux";
 
 
 function App() {
+	const isSpinner = useSelector<rootReducersType, boolean>(state => state.app.spinner)
 	const dispatch = useDispatch();
-
+	const errorStatus = useSelector(error)
 
 	useEffect(() => {
-		dispatch(setTodolistsTC())
-	}, [dispatch])
+		dispatch(isInitializationTC())
+	},[dispatch])
 
+	if (isSpinner) {
+		return <IsLoad/>
+	}
 
 	return (
 		<Container fixed>
 			<MenuAppBar/>
 			<LinearIndeterminate/>
-			<Routes>
-				<Route path="/Todolist" element={<TodolistDemo/>}/>
-				<Route path="/login" element={<AuthLogin/>}/>
-			</Routes>
+			<RoutesBlock/>
+			<ErrorAlert errorStatus={errorStatus}/>
 		</Container>
 	);
 }
